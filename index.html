@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExoPlanet AI - NASA Space Apps Challenge</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+    <link rel="stylesheet" href="style.css"></style> 
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 ExoPlanet AI Detector</h1>
+            <p>Advanced Machine Learning for Exoplanet Discovery</p>
+            <div class="mode-selector">
+                <button class="mode-btn active" onclick="switchMode('novice')">🎓 Novice Mode</button>
+                <button class="mode-btn" onclick="switchMode('researcher')">🔬 Researcher Mode</button>
+            </div>
+        </div>
+        
+        <div class="status" id="status">Model Ready</div>
+        
+        <div class="dashboard">
+            <div class="panel">
+                <h3>📊 Model Performance</h3>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-value" id="accuracy">96.8%</div>
+                        <div class="metric-label">Accuracy</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="precision">94.2%</div>
+                        <div class="metric-label">Precision</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="recall">98.1%</div>
+                        <div class="metric-label">Recall</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="f1score">96.1%</div>
+                        <div class="metric-label">F1-Score</div>
+                    </div>
+                </div>
+                <div class="visualization" id="roc-curve"></div>
+            </div>
+            
+            <div class="panel">
+                <h3>⚙️ Hyperparameters</h3>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="n-estimators">Random Forest Trees</label>
+                        <input type="range" class="slider" id="n-estimators" min="50" max="500" value="200" onchange="updateHyperparameter('n_estimators', this.value)">
+                        <span id="n-estimators-value">200</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="learning-rate">XGBoost Learning Rate</label>
+                        <input type="range" class="slider" id="learning-rate" min="0.01" max="0.3" step="0.01" value="0.1" onchange="updateHyperparameter('learning_rate', this.value)">
+                        <span id="learning-rate-value">0.10</span>
+                    </div>
+                    <div class="control-group advanced">
+                        <label for="max-depth">Max Depth</label>
+                        <input type="range" class="slider" id="max-depth" min="3" max="20" value="8" onchange="updateHyperparameter('max_depth', this.value)">
+                        <span id="max-depth-value">8</span>
+                    </div>
+                    <div class="control-group advanced">
+                        <label for="min-samples">Min Samples Split</label>
+                        <input type="range" class="slider" id="min-samples" min="2" max="20" value="5" onchange="updateHyperparameter('min_samples_split', this.value)">
+                        <span id="min-samples-value">5</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="retrainModel()" id="retrain-btn">🔄 Retrain Model</button>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h3>📁 Data Input</h3>
+            <div class="tutorial" id="tutorial">
+                <strong>💡 Getting Started:</strong> Upload CSV files with exoplanet data or enter parameters manually. 
+                The system will analyze orbital period, transit duration, and other features to predict if the object is a confirmed exoplanet, candidate, or false positive.
+            </div>
+            
+            <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+                <div>📤 Drop CSV files here or click to upload</div>
+                <small>Supports Kepler, K2, TESS data formats</small>
+                <input type="file" id="file-input" accept=".csv,.fits" multiple style="display: none;" onchange="handleFileUpload(event)">
+            </div>
+            
+            <div class="feature-input">
+                <div class="input-field">
+                    <label>Orbital Period (days)</label>
+                    <input type="number" id="period" step="0.001" placeholder="e.g., 365.25">
+                </div>
+                <div class="input-field">
+                    <label>Transit Duration (hours)</label>
+                    <input type="number" id="duration" step="0.01" placeholder="e.g., 6.5">
+                </div>
+                <div class="input-field">
+                    <label>Transit Depth (ppm)</label>
+                    <input type="number" id="depth" step="1" placeholder="e.g., 1000">
+                </div>
+                <div class="input-field">
+                    <label>Stellar Radius (Solar)</label>
+                    <input type="number" id="stellar_radius" step="0.01" placeholder="e.g., 1.0">
+                </div>
+                <div class="input-field advanced">
+                    <label>Stellar Temperature (K)</label>
+                    <input type="number" id="stellar_temp" step="10" placeholder="e.g., 5778">
+                </div>
+                <div class="input-field advanced">
+                    <label>Impact Parameter</label>
+                    <input type="number" id="impact" step="0.01" min="0" max="1" placeholder="e.g., 0.5">
+                </div>
+            </div>
+            
+            <button class="btn" onclick="predictSingle()">🔍 Analyze Object</button>
+            <button class="btn advanced" onclick="batchPredict()">⚡ Batch Analysis</button>
+        </div>
+        
+        <div id="results"></div>
+        
+        <div class="panel">
+            <h3>📈 Data Visualization</h3>
+            <div class="visualization" id="light-curve"></div>
+            <div class="visualization" id="feature-importance"></div>
+        </div>
+    </div>
+
+    <script src="index.js">
+    </script>
+</body>
+</html>

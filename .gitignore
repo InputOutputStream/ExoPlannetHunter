@@ -1,0 +1,83 @@
+# Dependencies
+node_modules
+node_modules/*
+# npm-debug.log*
+# yarn-debug.log*
+# yarn-error.log*
+
+# Production
+package-lock.json
+
+# Build outputs
+dist/
+build/
+.vite/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Temporary folders
+tmp/
+temp/
+
+# Dataset files (uncomment if you want to exclude datasets)
+dataset/*.csv
+dataset/*.txt
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Model artifacts
+*.h5
+*.pb
+saved_models/
+checkpoints/
+
+# TensorFlow.js model files
+*.bin
+model/
